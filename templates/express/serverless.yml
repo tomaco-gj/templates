@@ -1,0 +1,27 @@
+service: serverless-example # NOTE: update this with your service name
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+
+functions:
+  main:
+    handler: src/handler.handler
+    events:
+      - http:
+          method: ANY
+          path: /
+      - http:
+          method: ANY
+          path: "{proxy+}"
+
+plugins:
+  - serverless-esbuild
+  - serverless-offline
+
+custom:
+  esbuild:
+    watch:
+      pattern: ["src/**/*.ts"] # match only typescript files in src directory
+      ignore: [".esbuild/**/*", "node_modules"]
